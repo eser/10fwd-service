@@ -1,0 +1,84 @@
+{
+  "imports": {
+    "@/": "./src/",
+    "@generated/": "./etc/generated/",
+    "@std/": "https://deno.land/std@0.181.0/"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": [
+      "deno.ns",
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
+    ],
+    "strict": true
+  },
+  "lint": {
+    "files": {
+      "include": [
+        "src/",
+        "mod.ts",
+        "*.md",
+        "*.json"
+      ],
+      "exclude": []
+    },
+    "rules": {
+      "tags": [
+        "recommended"
+      ],
+      "include": [],
+      "exclude": [
+        "node_modules/"
+      ]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": [
+        "src/",
+        "mod.ts",
+        "*.md",
+        "*.json"
+      ],
+      "exclude": [
+        "node_modules/"
+      ]
+    }
+  },
+  "test": {
+    "files": {
+      "include": [
+        "src/"
+      ],
+      "exclude": [
+        "node_modules/"
+      ]
+    }
+  },
+  "bench": {
+    "files": {
+      "include": [
+        "src/"
+      ],
+      "exclude": [
+        "node_modules/"
+      ]
+    }
+  },
+  "tasks": {
+    "dev": "deno run --allow-net=:8000 --allow-env --watch ./src/main.ts",
+    "dev:debug": "deno run --allow-net=:8000 --allow-env --inspect-brk --watch ./src/main.ts",
+    "start": "deno run --allow-net=:8000 --allow-env ./src/main.ts",
+    "test": "deno test --allow-env --allow-read ./src/ --parallel --coverage=./etc/coverage/",
+    "test:coverage": "deno coverage ./etc/coverage/",
+    "test:generate-lcov": "deno coverage ./etc/coverage --lcov > ./etc/coverage/cov_profile.lcov",
+    "bench": "deno bench ./src/",
+    "db:seed": "deno run ./etc/prisma/seed.ts",
+    "db:generate": "deno run --allow-env --allow-read --allow-write --allow-run --allow-sys npm:prisma generate --data-proxy --schema ./etc/prisma/schema.prisma",
+    "db:push": "deno run npm:prisma db push",
+    "dockerize": "docker build -t 10fwd-service . && docker run -it --init -p 8000:8000 10fwd-service"
+  }
+}
